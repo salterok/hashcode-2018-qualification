@@ -2,16 +2,16 @@
  * @Author: salterok 
  * @Date: 2018-03-01 19:11:37 
  * @Last Modified by: salterok
- * @Last Modified time: 2018-03-02 01:11:08
+ * @Last Modified time: 2018-03-02 01:40:11
  */
 
 const fs = require("fs");
 
 // const caseName = "a_example";
-const caseName = "b_should_be_easy";
+// const caseName = "b_should_be_easy";
 // const caseName = "c_no_hurry";
 // const caseName = "d_metropolis";
-// const caseName = "e_high_bonus";
+const caseName = "e_high_bonus";
 
 
 const data = fs.readFileSync(`./in/${caseName}.in`, { encoding: "utf-8" });
@@ -24,6 +24,11 @@ console.log("ok", meta);
 // console.log("ok", rides);
 
 console.assert(rides.length === meta.rideCount);
+
+
+// compute max teoretical score, note it is not precise
+const MAX_TEORETICAL_SCORE = rides.reduce((acc, ride) => acc + distance(ride.start, ride.finish) + meta.inTimeStartBonus, 0);
+
 
 const maxTripScore = meta.rows + meta.cols;
 
@@ -121,7 +126,7 @@ function main() {
         if (dirty) {
             let o = rides.length;
             rides = rides.filter(ride => !(ride.done || ride.maxStart <= step));
-            console.log(o, rides.length)
+            // console.log(o, rides.length)
         }
     }
 
@@ -139,6 +144,7 @@ vehs.forEach(veh => {
 });
 console.log("TOTAL-rides", ridesTotal);
 console.log("TOTAL-score", scoreTotal);
+console.log("MAX-score", MAX_TEORETICAL_SCORE);
 
 const result = vehs.map(veh => {
     return veh.rides.length + " " + veh.rides.map(ride => ride.index).join(" ");
